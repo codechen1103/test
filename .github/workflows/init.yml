@@ -1,0 +1,27 @@
+name: Create vite project
+on: push
+
+permissions:
+  contents: write
+
+jobs:
+  init:
+    if: github.event.created == true 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - run: git config user.name "GitHub Actions"
+      - run: git config user.email "41898282+github-actions[bot]@users.<EMAIL>"
+
+      - run: npm create vite@latest tmp --yes
+
+      - run: git add .
+      - run: git diff --cached --quiet || git commit -m "init"
+
+      - run: git push
+
